@@ -14,7 +14,7 @@ class ParametroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(apb.root)
+        setContentView(apb.root) //startActivityforResult envia uma intent,  SetResult devolve uma intent para quem chamou!
 
     }
 }
