@@ -21,10 +21,16 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(amb.root)
 
+        setSupportActionBar(amb.toolbarTb)
+        supportActionBar?.apply {
+            title = getString(R.string.app_name)
+            subtitle = this@MainActivity.javaClass.simpleName
+        }
+
         amb.entrarParametroBt.setOnClickListener {
             val parametroIntent = Intent(this, ParametroActivity::class.java) // criar intent
             parametroIntent.putExtra(PARAMETRO_EXTRA, amb.parametroTv.text.toString()) // chave parametro e o conteúdo
-            startActivityForResult(parametroIntent, PARAMETRO_REQUEST_CODE) // chama a start com a intent e o token
+            startActivityForResult(parametroIntent, PARAMETRO_REQUEST_CODE) // 2.chama a start com a intent e o token
 
             // ABAIXO, O CÓDIGO MAIS NO JEITO KOTLIN.
             // Intent(this, ParametroActivity::class.java).apply {
@@ -33,6 +39,15 @@ class MainActivity : AppCompatActivity() {
             //     }
             //     startActivityForResult(this, PARAMETRO_REQUEST_CODE)
             // }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data) //4.Tratando o retorno
+        if (requestCode == PARAMETRO_REQUEST_CODE && resultCode == RESULT_OK) {
+            data?.getStringExtra(PARAMETRO_EXTRA)?.let { retorno ->
+                amb.parametroTv.text = retorno
+            }
         }
     }
 }

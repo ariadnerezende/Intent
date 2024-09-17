@@ -1,5 +1,6 @@
 package com.example.intents
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,8 +17,25 @@ class ParametroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(apb.root) //startActivityforResult envia uma intent,  SetResult devolve uma intent para quem chamou!
-        intent.getStringExtra(PARAMETRO_EXTRA)?.also { //recupera a intent que causou a abertura da tela, recupera o parametro pela chave
+
+        setSupportActionBar(apb.toolbarTb)
+        supportActionBar?.apply {
+            title = getString(R.string.app_name)
+            subtitle = this@ParametroActivity.javaClass.simpleName
+        }
+
+        intent.getStringExtra(PARAMETRO_EXTRA)?.also { //1.recupera a intent que causou a abertura da tela, recupera o parametro pela chave
             parametro -> apb.parametroEt.setText(parametro) //preenche o editText com o valor recebido
+        }
+
+        apb.enviarParametroBt.setOnClickListener {
+            Intent().apply{
+                apb.parametroEt.text.toString().let {
+                    putExtra(PARAMETRO_EXTRA, it)
+                }
+                setResult(RESULT_OK, this) //3.devolvendo a intent que acabou de ser preenchida
+            }
+            finish()
         }
     }
 }
