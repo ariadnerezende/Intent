@@ -33,17 +33,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         parl = registerForActivityResult( //obj, um para cada tela!
-            ActivityResultContracts.StartActivityForResult(),
-            object : ActivityResultCallback<ActivityResult> {
-                override fun onActivityResult(result: ActivityResult) {
-                    if (result.resultCode == RESULT_OK) {
-                        result.data?.getStringExtra(PARAMETRO_EXTRA)?.let {
-                            amb.parametroTv.text = it
-                        }
-                    }
+            ActivityResultContracts.StartActivityForResult()){
+            result -> if(result.resultCode == RESULT_OK){
+                result.data?.getStringExtra(PARAMETRO_EXTRA)?.let{
+                    amb.parametroTv.text = it
                 }
             }
-        )
+        }
 
         amb.entrarParametroBt.setOnClickListener {
             val parametroIntent = Intent(this, ParametroActivity::class.java)
